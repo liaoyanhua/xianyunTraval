@@ -1,5 +1,5 @@
 <template>
-  <div>index</div>
+  <div>air</div>
 </template>
 
 <script>
