@@ -1,13 +1,20 @@
 <template>
   <div>
+     <Head/>
     <!-- 内容占位组件 -->
     <nuxt />
+    <Foot/>
   </div>
 </template>
 
 <script>
+import Head from '@/components/head'
+import Foot from '@/components/foot'
 export default {
-
+  components:{
+    Head,
+    Foot
+  }
 }
 </script>
 
