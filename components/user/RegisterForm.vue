@@ -54,59 +54,88 @@ export default {
         username: [
           { required: true, message: "请输入用户名手机", trigger: "blur" }
         ],
-        captcha:[ { required: true, message: "请输入验证码", trigger: "blur" }],
+        captcha: [{ required: true, message: "请输入验证码", trigger: "blur" }],
         checkPass: [{ validator: validatePass, trigger: "blur" }],
-        nickname:[{ required: true, message: "请输入你的名字", trigger: "blur" }],
-        password:[
-            { required: true, message: "请输入密码", trigger: "blur" },
-            { min: 5, max: 8, message: '长度在 5 到 8 个字符', trigger: 'blur' }
+        nickname: [
+          { required: true, message: "请输入你的名字", trigger: "blur" }
+        ],
+        password: [
+          { required: true, message: "请输入密码", trigger: "blur" },
+          { min: 5, max: 8, message: "长度在 5 到 8 个字符", trigger: "blur" }
         ]
       }
     };
   },
   methods: {
     // 发送验证码
-    async handleSendCaptcha() {
-        if(!this.form.username)return this.$message.error('请输入正确的用户名手机号');
-        let res=await this.$axios({
-            url:'/captchas',
-            method:'POST',
-            data:{tel:this.form.username}
-        })
-        if(res.status===200){
-            let {code} = res.data;
-                 this.$alert(`这是验证码：${code}`, '验证码', {
-          confirmButtonText: '确定',
-          callback: action => {
-            this.form.captcha=code;
-          }
-        });
+   async handleSendCaptcha() {
+      if (!this.form.username)
+        return this.$message.error("请输入正确的用户名手机号");
+      //原来获取验证码的方式
+
+      // let res=await this.$axios({
+      //     url:'/captchas',
+      //     method:'POST',
+      //     data:{tel:this.form.username}
+      // })
+      // if(res.status===200){
+      //     let {code} = res.data;
+      //          this.$alert(`这是验证码：${code}`, '验证码', {
+      //   confirmButtonText: '确定',
+      //   callback: action => {
+      //     this.form.captcha=code;
+      //   }
+      // });
+      // }
+
+      //在vuex中通过actions异步获取验证码的方式，因为后面也要用到发送验证码的方式，故这里可以给它进行提取
+      let res=await this.$store.dispatch("user/register", this.form.username)
+      if(res.status===200){
+          let {code} = res.data;
+               this.$alert(`这是验证码：${code}`, '验证码', {
+        confirmButtonText: '确定',
+        callback: action => {
+          this.form.captcha=code;
         }
+      });
+      }
+
+      //普通的获取方式
+      // this.$store.dispatch("user/register", this.form.username).then(res=>{
+      //    if(res.status===200){
+      //     let {code} = res.data;
+      //          this.$alert(`这是验证码：${code}`, '验证码', {
+      //   confirmButtonText: '确定',
+      //   callback: action => {
+      //     this.form.captcha=code;
+      //   }
+      // });
+      // }
+      // })
     },
 
     // 注册
     handleRegSubmit() {
-        delete this.form.checkPass;
-         this.$refs.form.validate(async (valid) => {
-          if (valid) {
-           let res=await this.$axios({
-               url:'/accounts/register',
-               method:'POST',
-               data:this.form
-           })
-           if(res.status===200){
-               this.$message.success('注册成功');
-               this.$store.commit('user/SetUserInfo',res.data)
-               setTimeout(()=>{
-                   this.$router.push('/');
-               },2000)
-           }
-          } else {
-            this.$message.error('请输入正确的用户名手机和密码')
-            return false;
+      delete this.form.checkPass;
+      this.$refs.form.validate(async valid => {
+        if (valid) {
+          let res = await this.$axios({
+            url: "/accounts/register",
+            method: "POST",
+            data: this.form
+          });
+          if (res.status === 200) {
+            this.$message.success("注册成功");
+            this.$store.commit("user/SetUserInfo", res.data);
+            setTimeout(() => {
+              this.$router.push("/");
+            }, 2000);
           }
-        });
-      
+        } else {
+          this.$message.error("请输入正确的用户名手机和密码");
+          return false;
+        }
+      });
     }
   }
 };

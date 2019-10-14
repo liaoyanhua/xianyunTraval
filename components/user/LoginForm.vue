@@ -44,17 +44,26 @@ export default {
           if (!valid) {
             this.$message.error('请输入正确的用户名或秘密');
           } else {
-           this.$axios({
-                url:'/accounts/login',
-                method:'POST',
-                data:this.form
-            }).then(res=>{
-                if(res.status===200){
-                    this.$message.success('登录成功');
-                    //在vuex中存储数据
-                    this.$store.commit("user/SetUserInfo",res.data);
-                    this.$router.push('/');
-                }
+            //在vuex中  使用mutations同步存储数据的方式
+          //  this.$axios({
+          //       url:'/accounts/login',
+          //       method:'POST',
+          //       data:this.form
+          //   }).then(res=>{
+          //       if(res.status===200){
+          //           this.$message.success('登录成功');
+          //           //在vuex中存储数据
+          //           this.$store.commit("user/SetUserInfo",res.data);
+          //           this.$router.push('/');
+          //       }
+          //   })
+
+          //在vuex中使用actions异步存储数据的方式
+            this.$store.dispatch('user/login',this.form).then(res=>{
+              this.$message.success('登陆成功');
+              setTimeout(()=>{
+                this.$router.push('/')
+              },2000)
             })
 
             return false;
