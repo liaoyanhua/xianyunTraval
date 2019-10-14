@@ -31,7 +31,9 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/element-ui'
+    '@/plugins/element-ui',
+   // 其他代码...
+   { src: '@/plugins/localStorage', ssr: false }
   ],
   /*
   ** Nuxt.js dev-modules

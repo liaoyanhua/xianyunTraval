@@ -1,14 +1,12 @@
 <template>
     <header class="header">
         <el-row type="flex" justify="space-between" class="main">
-
             <!-- logo -->
             <div class="logo">
                 <nuxt-link to="/">
                     <img src="http://157.122.54.189:9093/images/logo.jpg" alt="">
                 </nuxt-link>
             </div>
-
             <!-- 菜单栏 -->
             <el-row type="flex" class="navs">
                 <nuxt-link to="/">首页</nuxt-link>
@@ -16,12 +14,8 @@
                 <nuxt-link to="/hotel">酒店</nuxt-link>
                 <nuxt-link to="/air">国内机票</nuxt-link>  
             </el-row>
-
             <!-- 登录/用户信息 -->
             <el-row type="flex" align="middle">
-
-              
-
                 <!-- 不存在用户信息展示登录注册链接 -->
                 <nuxt-link to="/user/login" class="account-link" v-if="!$store.state.user.userinfo.token">
                     登录 / 注册 
@@ -60,8 +54,7 @@ export default {
            this.$store.commit("user/SetUserInfo",{});
         },
     },
-    mounted(){
-        //  console.log(this.$store.state.user.userinfo);
+    mounted(){   
     }
 }
 </script>

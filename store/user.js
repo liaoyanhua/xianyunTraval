@@ -1,4 +1,4 @@
-export let state=()=>{
+export function state(){
     return{
         userinfo:{}
     }
