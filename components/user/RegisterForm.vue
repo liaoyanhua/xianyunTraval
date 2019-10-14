@@ -102,6 +102,7 @@ export default {
 
       //普通的获取方式
       // this.$store.dispatch("user/register", this.form.username).then(res=>{
+      //   console.log(res);
       //    if(res.status===200){
       //     let {code} = res.data;
       //          this.$alert(`这是验证码：${code}`, '验证码', {

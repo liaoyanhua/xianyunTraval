@@ -12,7 +12,7 @@ export let mutations = {
 
 export let actions = {
   login(store, formData) {
-    this.$axios({
+    return  this.$axios({
       url: '/accounts/login',
       method: 'POST',
       data: formData
@@ -31,13 +31,13 @@ export let actions = {
       })
       return res;
     }
-//   register(store, captchas) {
-//     return  this.$axios({
-//       url: '/captchas',
-//       method: 'POST',
-//       data: {
-//         tel: captchas
-//       }
-//     })
-//   }
+  // register(store, captchas) {
+  //   return  this.$axios({
+  //     url: '/captchas',
+  //     method: 'POST',
+  //     data: {
+  //       tel: captchas
+  //     }
+  //   })
+  // }
 }
