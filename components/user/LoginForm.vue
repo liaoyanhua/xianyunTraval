@@ -60,6 +60,7 @@ export default {
 
           //在vuex中使用actions异步存储数据的方式
             this.$store.dispatch('user/login',this.form).then(res=>{
+              console.log(res);
               if(!res.token)return;
               this.$message.success('登陆成功');
               setTimeout(()=>{
