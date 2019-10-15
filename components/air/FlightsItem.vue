@@ -1,42 +1,42 @@
 <template>
-    <div class="flight-item">
+    <div class="flight-item" @click="isShow=!isShow">
         <div>
             <!-- 显示的机票信息 -->
             <el-row type="flex" align="middle" class="flight-info">
                 <el-col :span="6">
-                    <span>东航 </span> MU5316
+                    <span>{{item.airline_name}} </span> {{item.flight_no}}
                 </el-col>
                 <el-col :span="12">
                     <el-row type="flex" justify="space-between" class="flight-info-center">
                         <el-col :span="8" class="flight-airport">
-                            <strong>20:30</strong>
-                            <span>白云机场T1</span>
+                            <strong>{{item.dep_time}}</strong>
+                            <span>{{item.org_airport_name}}{{item.org_airport_quay}}</span>
                         </el-col>
                         <el-col :span="8" class="flight-time">
-                            <span>2时20分</span>
+                            <span>{{timeMins}}</span>
                         </el-col>
                         <el-col :span="8" class="flight-airport">
-                            <strong>22:50</strong>
-                            <span>虹桥机场T2</span>
+                            <strong>{{item.arr_time}}</strong>
+                            <span>{{item.dst_airport_name}}{{item.dst_airport_quay}}</span>
                         </el-col>
                     </el-row>
                 </el-col>
                 <el-col :span="6" class="flight-info-right">
-                    ￥<span class="sell-price">810</span>起
+                    ￥<span class="sell-price">{{item.base_price/2}}</span>起
                 </el-col>
             </el-row>
         </div>
-        <div class="flight-recommend">
+        <div class="flight-recommend" v-if="isShow">
             <!-- 隐藏的座位信息列表 -->
             <el-row type="flex"  justify="space-between" align="middle">
                 <el-col :span="4">低价推荐</el-col>
                 <el-col :span="20">
-                    <el-row type="flex" justify="space-between" align="middle" class="flight-sell">
+                    <el-row :key="index1" v-for="(item1,index1) in item.seat_infos" type="flex" justify="space-between" align="middle" class="flight-sell">
                         <el-col :span="16" class="flight-sell-left">
-                            <span>经济舱</span> | 上海一诺千金航空服务有限公司
+                            <span>{{item1.group_name}}</span> | {{item1.supplierName}}
                         </el-col>
                         <el-col :span="5" class="price">
-                            ￥1345
+                            ￥{{item1.org_settle_price}}
                         </el-col>
                         <el-col :span="3" class="choose-button">
                             <el-button 
@@ -44,7 +44,7 @@
                             size="mini">
                             选定
                             </el-button>
-                            <p>剩余：83</p>
+                            <p>剩余：{{item1.discount}}</p>
                         </el-col>
                     </el-row>
                 </el-col>
@@ -55,14 +55,33 @@
 
 <script>
 export default {
-
+    data(){
+        return{
+            isShow:false
+        }
+    },
     props: {
         // 数据
-        data: {
+        item: {
             type: Object,
             // 默认是空数组
             default: {}
         }
+    },
+    computed:{
+        timeMins(){
+            let arrTime=this.item.arr_time.split(':');
+            let depTime=this.item.dep_time.split(':');
+            if(arrTime[0]<depTime[0]){
+                arrTime[0]+=24
+            }
+            let times= (arrTime[0]*60+ +arrTime[1])-(depTime[0]*60+ +depTime[1]);
+            let str=`${Math.floor(times/60)}时${times%60}分`
+            return str
+        }
+    },
+    mounted(){
+        //  console.log(this.item);   
     }
 }
 </script>

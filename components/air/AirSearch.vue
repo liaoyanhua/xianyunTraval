@@ -99,7 +99,8 @@ export default {
         params: { name: this.form[(name ? name : "depart") + "City"] }
       });
       this.searchCities = res.data.data.map(v => {
-        v.value = v.name;
+        v.name=v.name.replace('市','');
+        v.value = v.name.replace('市','');
         return v;
       });
       cb(this.searchCities);
