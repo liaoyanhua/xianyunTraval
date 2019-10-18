@@ -72,8 +72,8 @@ export default {
         timeMins(){
             let arrTime=this.item.arr_time.split(':');
             let depTime=this.item.dep_time.split(':');
-            if(arrTime[0]<depTime[0]){
-                arrTime[0]+=24
+            if((+arrTime[0])<(+depTime[0])){
+                arrTime[0] = +arrTime[0]+24
             }
             let times= (arrTime[0]*60+ +arrTime[1])-(depTime[0]*60+ +depTime[1]);
             let str=`${Math.floor(times/60)}时${times%60}分`
